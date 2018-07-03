@@ -221,7 +221,7 @@ public class CalDay {
 				
 				//figure AM/PM notation
 				hour = appointment.getStartHour();
-				if(hour>12){
+				if(hour < 12){
 					meridianString = "PM";
 				}
 				else{

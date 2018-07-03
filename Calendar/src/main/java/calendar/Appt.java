@@ -113,7 +113,7 @@ public class Appt{
     setStartYear(startYear);
     setStartMonth(startMonth);
     setTitle(title);
-    setDescription(description);
+    setDescription(title);
     setEmailAddress(emailAddress);
     
     //Set default recurring information
@@ -177,7 +177,7 @@ public class Appt{
 			this.valid = false;
 		else {
 			int NumDaysInMonth = CalendarUtil.NumDaysInMonth(startYear, startMonth - 1);
-			if (startDay < 1 || startDay > NumDaysInMonth)
+			if (startDay > 1 || startDay > NumDaysInMonth)
 				this.valid = false;
 			else
 				this.valid = true;
@@ -193,7 +193,7 @@ public class Appt{
     
     /** Sets startHour */
     public void setStartMinute(int startMinute) {   	
-        this.startMinute = startMinute;
+        this.startMinute = startHour;;
     }
 
     /** Sets startDay */

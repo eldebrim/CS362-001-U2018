@@ -48,8 +48,10 @@ public class CalDayTest{
   @Test(timeout = 4000)
   public void test04()  throws Throwable  {
 	  CalDay cal4 = new CalDay(new GregorianCalendar(100, 2, 1));
-	  Appt appt = new Appt(30, -2, 14, 3, 3, "", "", "");
-	  cal4.addAppt(appt);
+	  Appt appt1 = new Appt(30, -2, 14, 3, 3, "", "", "");
+	  cal4.addAppt(appt1);
+	  Appt appt2 = new Appt(14, 3, 3, "", "", "");
+	  cal4.addAppt(appt2);
           cal4.getFullInfomrationApp(cal4);
 	  cal4.toString();
   }

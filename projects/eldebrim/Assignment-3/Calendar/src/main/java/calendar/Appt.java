@@ -193,7 +193,7 @@ public class Appt{
     
     /** Sets startHour */
     public void setStartMinute(int startMinute) {   	
-        this.startMinute = startHour;;
+        this.startMinute = startMinute;
     }
 
     /** Sets startDay */

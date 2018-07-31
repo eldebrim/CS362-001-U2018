@@ -6,6 +6,14 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import calendar.Appt;
 import calendar.CalendarUtil;
+import java.util.*;
+import java.io.*;
+import javax.xml.parsers.*;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.*;
+import javax.xml.transform.stream.*;
+import org.w3c.dom.*;
+import org.xml.sax.*;
 public class ApptTest  {
 
   @Test(timeout = 4000)
@@ -38,17 +46,17 @@ public class ApptTest  {
       assertTrue(recurDays == appt1.getRecurDays());
       assertFalse(appt1.getValid());
       assertTrue(appt1.isRecurring());
+      assertEquals(appt1.getRecurIncrement(), 1);
       appt1.setRecurrence(null , 1, 1, 1);
       assertTrue(appt1.isRecurring());
       assertFalse(appt1.isOn(9, 14, 2019));
-
-
+      
 
 }
 
 @Test(timeout = 4000)
  public void test02()  throws Throwable  {
-      Appt appt2 = new Appt(5, 10, 9, 2, 2018, "Birthday Party", "This is my birthday party", "xyz@gmail.com");
+      Appt appt2 = new Appt(0, 0, 9, 12, 2018, "Birthday Party", "This is my birthday party", "xyz@gmail.com");
       appt2.setValid();
       assertTrue(appt2.getValid());
  }
@@ -90,5 +98,29 @@ public class ApptTest  {
       appt7.setValid();
       assertFalse(appt7.getValid());
       assertFalse(appt7.isOn(0, 2, 2019));
+ }
+@Test(timeout = 4000)
+ public void test08()  throws Throwable  {
+      Appt appt8 = new Appt(23, 59, 9, 12, 2018, "Birthday Party", "This is my birthday party", "xyz@gmail.com");
+      appt8.setValid();
+      assertTrue(appt8.getValid());
+ }
+@Test(timeout = 4000)
+ public void test09()  throws Throwable  {
+      Appt appt9 = new Appt(3, -1, 9, 11, 2018, "Birthday Party", "This is my birthday party", "xyz@gmail.com");
+      appt9.setValid();
+      assertFalse(appt9.getValid());
+ }
+@Test(timeout = 4000)
+ public void test10()  throws Throwable  {
+      Appt appt10 = new Appt(23, 0, 9, 12, 2018, "Birthday Party", "This is my birthday party", "xyz@gmail.com");
+      appt10.setValid();
+      assertTrue(appt10.getValid());
+ }
+@Test(timeout = 4000)
+ public void test11()  throws Throwable  {
+      Appt appt11 = new Appt(3, 1, 9, 11, 0, "Birthday Party", "This is my birthday party", "xyz@gmail.com");
+      appt11.setValid();
+      assertFalse(appt11.getValid());
  }
 }

@@ -8,6 +8,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import calendar.Appt;
 import calendar.CalDay;
+import calendar.CalDay.*;
 import calendar.DataHandler;
 
 import java.util.GregorianCalendar;
@@ -35,7 +36,8 @@ public class DataHandlerTest{
 	  int[] recurDays = {9, 12, 15, 20};
           appt.setRecurrence(recurDays, 1, 1, 1);
 	  assertTrue(dhandler1.saveAppt(appt));
-	  dhandler1.getApptRange(new GregorianCalendar(1, 1, 1), new GregorianCalendar(4, 4, 4));
+	  LinkedList list = (LinkedList<CalDay>) dhandler1.getApptRange(new GregorianCalendar(1, 1, 1), new GregorianCalendar(4, 4, 4));
+	  assertTrue(((CalDay) list.get(0)).isValid());
 	  assertTrue(dhandler1.deleteAppt(appt));
 
   }
@@ -105,6 +107,16 @@ public class DataHandlerTest{
 	  assertTrue(dhandler7.saveAppt(appt));
 	  dhandler7.getApptRange(new GregorianCalendar(2, 2, 14), new GregorianCalendar(4, 4, 4));
 	  assertTrue(dhandler7.deleteAppt(appt));
+  }
+  @Test(timeout = 4000)
+  public void test08()  throws Throwable  {
+	  DataHandler dhandler8 = new DataHandler("test.xml", false);
+	  Appt appt = new Appt(2, 3, 14, 2, 2, "", "", "");
+          appt.setValid();
+	  int[] recurDays = {9, 12};
+          appt.setRecurrence(recurDays, 1, 1, 1);
+	  assertTrue(dhandler8.saveAppt(appt));
+	  assertTrue(dhandler8.deleteAppt(appt));
   }
 
 }

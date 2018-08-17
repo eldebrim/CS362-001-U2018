@@ -23,7 +23,7 @@ public class UrlValidatorTest extends TestCase {
       super(testName);
    }
     
-   
+  /* 
     public void testManualTest()
     {
 	    UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
@@ -77,7 +77,7 @@ public class UrlValidatorTest extends TestCase {
 
 	    } 
 	
-    } 
+    } */
    public void testIsValid()
    {
 	    UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
@@ -92,7 +92,6 @@ public class UrlValidatorTest extends TestCase {
 			   for (int k=0; k < ports.length; k++) {
 				   for (int l =0; l < paths.length; l++) {
 					   for (int m=0; m < queries.length; m++) {
-						   System.out.println(schemes[i]+authorities[j]+ports[k]+paths[l]+queries[m]);
 						assertTrue(urlVal.isValid(schemes[i]+authorities[j]+ports[k]+paths[l]+queries[m]));
 					   }
 				   }
@@ -114,7 +113,11 @@ public class UrlValidatorTest extends TestCase {
            String[] badAuthorities    = { "asdf", "", "266.266.266.266" };
            String[] badPorts    = { ":a80", "abc"};
 	   String[] badPaths =  { "/..", "/../", "/../file" };
+	   String[] badQueries =  { "\\?:"};
+		
 
+	   assertFalse(urlVal.isValid("1234asdf"));
+	   assertFalse(urlVal.isValid(null));
 	   for (int i=0; i < badSchemes.length; i++) {
 		   for (int j=0; j < authorities.length; j++) {
 			   for (int k=0; k < ports.length; k++) {
@@ -154,6 +157,17 @@ public class UrlValidatorTest extends TestCase {
 				   for (int l =0; l < badPaths.length; l++) {
 					   for (int m=0; m < queries.length; m++) {
 						assertFalse(urlVal.isValid(schemes[i]+authorities[j]+ports[k]+badPaths[l]+queries[m]));
+					   }
+				   }
+			   }
+		   }
+	   }
+	   for (int i=0; i < schemes.length; i++) {
+		   for (int j=0; j < authorities.length; j++) {
+			   for (int k=0; k < ports.length; k++) {
+				   for (int l =0; l < paths.length; l++) {
+					   for (int m=0; m < badQueries.length; m++) {
+						assertFalse(urlVal.isValid(schemes[i]+authorities[j]+ports[k]+paths[l]+badQueries[m]));
 					   }
 				   }
 			   }

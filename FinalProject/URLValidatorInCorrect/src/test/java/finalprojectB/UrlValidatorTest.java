@@ -85,7 +85,7 @@ public class UrlValidatorTest extends TestCase {
            String[] authorities    = { "www.google.com", "google.com",  "amazon.com", "127.0.0.1" };
            String[] ports    = { ":80", ":65535", "", ":0" };
 	   String[] paths =  { "/test1", "/test12", "/test/" };
-	   String[] queries =  { "?action=view"  };
+	   String[] queries =  { "?action=view", "?action=edit&mode=up", ""  };
 
 	   for (int i=0; i < schemes.length; i++) {
 		   for (int j=0; j < authorities.length; j++) {
@@ -101,4 +101,63 @@ public class UrlValidatorTest extends TestCase {
 	   }
    }
 
+   public void testIsNotValid()
+   {
+	    UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
+	   String[] schemes    = { "http://", "https://",  "ftp://", "h3t://" };
+           String[] authorities    = { "www.google.com", "google.com",  "amazon.com", "127.0.0.1" };
+           String[] ports    = { ":80", ":65535", "", ":0" };
+	   String[] paths =  { "/test1", "/test12", "/test/" };
+	   String[] queries =  { "?action=view", "?action=edit&mode=up", ""  };
+
+	   String[] badSchemes    = { "http//", "http/",  "ftp:/", "h3t" };
+           String[] badAuthorities    = { "asdf", "", "266.266.266.266" };
+           String[] badPorts    = { ":a80", "abc"};
+	   String[] badPaths =  { "/..", "/../", "/../file" };
+
+	   for (int i=0; i < badSchemes.length; i++) {
+		   for (int j=0; j < authorities.length; j++) {
+			   for (int k=0; k < ports.length; k++) {
+				   for (int l =0; l < paths.length; l++) {
+					   for (int m=0; m < queries.length; m++) {
+						assertFalse(urlVal.isValid(badSchemes[i]+authorities[j]+ports[k]+paths[l]+queries[m]));
+					   }
+				   }
+			   }
+		   }
+	   }
+	   for (int i=0; i < schemes.length; i++) {
+		   for (int j=0; j < badAuthorities.length; j++) {
+			   for (int k=0; k < ports.length; k++) {
+				   for (int l =0; l < paths.length; l++) {
+					   for (int m=0; m < queries.length; m++) {
+						assertFalse(urlVal.isValid(schemes[i]+badAuthorities[j]+ports[k]+paths[l]+queries[m]));
+					   }
+				   }
+			   }
+		   }
+	   }
+	   for (int i=0; i < schemes.length; i++) {
+		   for (int j=0; j < authorities.length; j++) {
+			   for (int k=0; k < badPorts.length; k++) {
+				   for (int l =0; l < paths.length; l++) {
+					   for (int m=0; m < queries.length; m++) {
+						assertFalse(urlVal.isValid(schemes[i]+authorities[j]+badPorts[k]+paths[l]+queries[m]));
+					   }
+				   }
+			   }
+		   }
+	   }
+	   for (int i=0; i < schemes.length; i++) {
+		   for (int j=0; j < authorities.length; j++) {
+			   for (int k=0; k < ports.length; k++) {
+				   for (int l =0; l < badPaths.length; l++) {
+					   for (int m=0; m < queries.length; m++) {
+						assertFalse(urlVal.isValid(schemes[i]+authorities[j]+ports[k]+badPaths[l]+queries[m]));
+					   }
+				   }
+			   }
+		   }
+	   }
+   }
 }

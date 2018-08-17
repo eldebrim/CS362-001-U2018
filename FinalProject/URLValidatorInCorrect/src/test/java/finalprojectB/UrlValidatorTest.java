@@ -24,7 +24,6 @@ public class UrlValidatorTest extends TestCase {
    }
     
    
-   
     public void testManualTest()
     {
 	    UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
@@ -34,9 +33,9 @@ public class UrlValidatorTest extends TestCase {
 	    assertTrue(urlVal.isValid("hts://www.amazon.com"));
 	    assertFalse(urlVal.isValid(null));
 	    assertFalse(urlVal.isValid("asdf"));
-	    //assertTrue(urlVal.isValid("file://localhost/etc/fstab")); //  bug in UrlValidator  
+	    assertTrue(urlVal.isValid("file://localhost/etc/fstab")); //  bug in UrlValidator  
 
-	    //assertFalse(urlVal.isValid("https:/www.amazon.com")); // bug in DomainValidator class, line 165
+	    assertFalse(urlVal.isValid("https:/www.amazon.com")); // bug in DomainValidator class, line 165
    
    
     } 
@@ -45,13 +44,15 @@ public class UrlValidatorTest extends TestCase {
 	    UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
             String[] schemes    = { "http://", "https://",  "ftp://", "h3t://" };
 	    for(int i = 0; i < schemes.length; i++) {
-		    assertTrue(urlVal.isValid(schemes[i] + "google.com"));
-                    if(urlVal.isValid(schemes[i] + "google.com")) {
+		    assertTrue(urlVal.isValid(schemes[i] + "www.google.com"));
+			    System.out.println(schemes[i] + "google.com");
+                    if(!urlVal.isValid(schemes[i] + "google.com")) {
+			    System.out.println(schemes[i] + "google.com");
 
 		    }
 
 	    } 
-            String[] badSchemes    = { "http//", "http:/", "ftp://", "h3t",  };
+            String[] badSchemes    = { "http//", "http:/", "ftp:\\\\", "h3t",  };
 	    for(int i = 0; i < badSchemes.length; i++) {
 		    assertFalse(urlVal.isValid(badSchemes[i] + "google.com"));
 
@@ -69,11 +70,35 @@ public class UrlValidatorTest extends TestCase {
 		    }
 
 	    } 
-            String[] badAuthorities    = { "266.266.266.266", "asdf", "1234"};
+            String[] badAuthorities    = { "", "asdf", "1234"};
 	    for(int i = 0; i < badAuthorities.length; i++) {
-		    assertFalse(urlVal.isValid("http://" + authorities[i]));
+		    System.out.println("http://" + badAuthorities[i]);
+		    assertFalse(urlVal.isValid("http://" + badAuthorities[i]));
 
 	    } 
 	
     } 
+   public void testIsValid()
+   {
+	    UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
+	   String[] schemes    = { "http://", "https://",  "ftp://", "h3t://" };
+           String[] authorities    = { "www.google.com", "google.com",  "amazon.com", "127.0.0.1" };
+           String[] ports    = { ":80", ":65535", "", ":0" };
+	   String[] paths =  { "/test1", "/test12", "/test/" };
+	   String[] queries =  { "?action=view"  };
+
+	   for (int i=0; i < schemes.length; i++) {
+		   for (int j=0; j < authorities.length; j++) {
+			   for (int k=0; k < ports.length; k++) {
+				   for (int l =0; l < paths.length; l++) {
+					   for (int m=0; m < queries.length; m++) {
+						   System.out.println(schemes[i]+authorities[j]+ports[k]+paths[l]+queries[m]);
+						assertTrue(urlVal.isValid(schemes[i]+authorities[j]+ports[k]+paths[l]+queries[m]));
+					   }
+				   }
+			   }
+		   }
+	   }
+   }
+
 }

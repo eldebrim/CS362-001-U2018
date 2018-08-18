@@ -18,12 +18,13 @@ public class UrlValidatorTest extends TestCase {
 
    private boolean printStatus = false;
    private boolean printIndex = false;//print index that indicates current scheme,host,port,path, query test were using.
+   int bugs = 0;
 
    public UrlValidatorTest(String testName) {
       super(testName);
    }
     
-  /* 
+/*   
     public void testManualTest()
     {
 	    UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
@@ -80,7 +81,7 @@ public class UrlValidatorTest extends TestCase {
     } */
    public void testIsValid()
    {
-	    UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
+	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
 	   String[] schemes    = { "http://", "https://",  "ftp://", "h3t://" };
            String[] authorities    = { "www.google.com", "google.com",  "amazon.com", "127.0.0.1" };
            String[] ports    = { ":80", ":65535", "", ":0" };
@@ -92,7 +93,10 @@ public class UrlValidatorTest extends TestCase {
 			   for (int k=0; k < ports.length; k++) {
 				   for (int l =0; l < paths.length; l++) {
 					   for (int m=0; m < queries.length; m++) {
-						assertTrue(urlVal.isValid(schemes[i]+authorities[j]+ports[k]+paths[l]+queries[m]));
+						   System.out.println(schemes[i]+authorities[j]+ports[k]+paths[l]+queries[m]);
+						if(urlVal.isValid(schemes[i]+authorities[j]+ports[k]+paths[l]+queries[m])) {
+							bugs++;
+						}
 					   }
 				   }
 			   }
@@ -123,7 +127,9 @@ public class UrlValidatorTest extends TestCase {
 			   for (int k=0; k < ports.length; k++) {
 				   for (int l =0; l < paths.length; l++) {
 					   for (int m=0; m < queries.length; m++) {
-						assertFalse(urlVal.isValid(badSchemes[i]+authorities[j]+ports[k]+paths[l]+queries[m]));
+						if(urlVal.isValid(badSchemes[i]+authorities[j]+ports[k]+paths[l]+queries[m])) {
+							bugs++;
+						}
 					   }
 				   }
 			   }
@@ -134,7 +140,9 @@ public class UrlValidatorTest extends TestCase {
 			   for (int k=0; k < ports.length; k++) {
 				   for (int l =0; l < paths.length; l++) {
 					   for (int m=0; m < queries.length; m++) {
-						assertFalse(urlVal.isValid(schemes[i]+badAuthorities[j]+ports[k]+paths[l]+queries[m]));
+						if(urlVal.isValid(schemes[i]+badAuthorities[j]+ports[k]+paths[l]+queries[m])) {
+							bugs++;
+						}
 					   }
 				   }
 			   }
@@ -145,7 +153,9 @@ public class UrlValidatorTest extends TestCase {
 			   for (int k=0; k < badPorts.length; k++) {
 				   for (int l =0; l < paths.length; l++) {
 					   for (int m=0; m < queries.length; m++) {
-						assertFalse(urlVal.isValid(schemes[i]+authorities[j]+badPorts[k]+paths[l]+queries[m]));
+						if(urlVal.isValid(schemes[i]+authorities[j]+badPorts[k]+paths[l]+queries[m])) {
+							bugs++;
+						}
 					   }
 				   }
 			   }
@@ -156,7 +166,9 @@ public class UrlValidatorTest extends TestCase {
 			   for (int k=0; k < ports.length; k++) {
 				   for (int l =0; l < badPaths.length; l++) {
 					   for (int m=0; m < queries.length; m++) {
-						assertFalse(urlVal.isValid(schemes[i]+authorities[j]+ports[k]+badPaths[l]+queries[m]));
+						if(urlVal.isValid(schemes[i]+authorities[j]+ports[k]+badPaths[l]+queries[m])) {
+							bugs++;
+						}
 					   }
 				   }
 			   }
@@ -167,11 +179,14 @@ public class UrlValidatorTest extends TestCase {
 			   for (int k=0; k < ports.length; k++) {
 				   for (int l =0; l < paths.length; l++) {
 					   for (int m=0; m < badQueries.length; m++) {
-						assertFalse(urlVal.isValid(schemes[i]+authorities[j]+ports[k]+paths[l]+badQueries[m]));
+						if(urlVal.isValid(schemes[i]+authorities[j]+ports[k]+paths[l]+badQueries[m])) {
+							bugs++;
+						}
 					   }
 				   }
 			   }
 		   }
 	   }
+	   System.out.println(bugs + "bugs found");
    }
 }

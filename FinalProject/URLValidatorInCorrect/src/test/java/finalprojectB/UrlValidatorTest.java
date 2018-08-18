@@ -79,6 +79,38 @@ public class UrlValidatorTest extends TestCase {
 	    } 
 	
     } 
+   public void testPortPartitions()
+    {
+	    UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
+           String[] ports    = { ":80", ":65535", "", ":0", "" };
+	    for(int i = 0; i < ports.length; i++) {
+		    assertTrue(urlVal.isValid("http://google.com" + ports[i]));
+
+	    } 
+            String[] badPorts    = { "asdf", "1234"};
+	    for(int i = 0; i < badPorts.length; i++) {
+		    System.out.println("http://" + badPorts[i]);
+		    assertFalse(urlVal.isValid("http://google.com" + badPorts[i]));
+
+	    } 
+	
+    } 
+   public void testPathPartitions()
+    {
+	    UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
+	   String[] paths =  { "/test1", "/test12", "/test/" };
+	   String[] badPaths =  { "/..", "/../", "/../file" };
+	    for(int i = 0; i < paths.length; i++) {
+		    assertTrue(urlVal.isValid("http://google.com" + paths[i]));
+
+	    } 
+	    for(int i = 0; i < badPaths.length; i++) {
+		    System.out.println("http://" + badPaths[i]);
+		    assertFalse(urlVal.isValid("http://google.com" + badPaths[i]));
+
+	    } 
+	
+    } 
    public void testIsValid()
    {
 	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);

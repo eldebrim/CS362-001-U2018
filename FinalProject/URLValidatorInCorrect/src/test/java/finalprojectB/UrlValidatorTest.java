@@ -24,7 +24,7 @@ public class UrlValidatorTest extends TestCase {
       super(testName);
    }
     
-/*   
+   
     public void testManualTest()
     {
 	    UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
@@ -78,7 +78,7 @@ public class UrlValidatorTest extends TestCase {
 
 	    } 
 	
-    } */
+    } 
    public void testIsValid()
    {
 	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
